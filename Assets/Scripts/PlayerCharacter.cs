@@ -59,9 +59,13 @@ public class  PlayerCharacter : MonoBehaviour
     {
         fillImg.enabled = false; //disabilitiamo il fill image dentro lo slider della barra della salute
         gameOver.enabled = true;//abilitiamo la scritta gameover
-       
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         Time.timeScale = 0; //mette in pausa il gioco 
         healthBarBackground.color =Color.red;
+        GameEvent.isPaused = true;
     }
 
 }

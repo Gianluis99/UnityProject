@@ -19,8 +19,9 @@ public class RayShooter : MonoBehaviour
         _camera = GetComponent<Camera>();
         (sniperScope.GetComponent<Renderer>()).enabled = false;
 
-       // Cursor.lockState = CursorLockMode.Locked;
-       // Cursor.visible = false;  //rendiamo invisibile il cursore del mouse
+        //rendiamo invisibile il cursore del mouse
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;  
     }
 
     //metodo per visualizzare il puntatore che ci indicherà il bersaglio sarà al centro della camera
@@ -49,11 +50,14 @@ public class RayShooter : MonoBehaviour
             {
                 GameObject hitObject = hit.transform.gameObject;
                 ReactiveTarget target = hitObject.GetComponent<ReactiveTarget>();//ci prendiamo il target 
-                if (target != null)//se l'oggetto target(nemico) viene colpito
+              
+                //se l'oggetto target(nemico) viene colpito
+                if (target != null)
                 {
                     //Debug.Log("Target hit");
 
                     target.ReactToHit();//esegue il metodo di ReactiveTarget
+                    Messenger.Broadcast(GameEvent.ENEMY_HIT);
                 }
                 else//se il target non viene colpito allora sparerà a vuoto
                 {

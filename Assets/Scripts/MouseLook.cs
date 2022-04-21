@@ -29,36 +29,40 @@ public class MouseLook : MonoBehaviour
         if (body != null)
             body.freezeRotation = true;
     }
-   
 
-    
+
+
     // Update is called once per frame
     void Update()
     {
-        if(axes ==RotationAxes.MouseX)
-        {   //la vista si sposta in orizzontale
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+        //Se il gioco non è in pausa allora facciamo i movimenti
+        if (!GameEvent.isPaused) {
+            if (axes == RotationAxes.MouseX)
+            {   //la vista si sposta in orizzontale
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+            }
+            else if (axes == RotationAxes.MouseY)
+            {   // la vista si sposta in verticale
+                _rotationX -= Input.GetAxis("Mouse Y") * sensitivityVert;
+                _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert); //clamp è il massimo range possibile per spostare la visuale del mouse
+
+                float rotationY = transform.localEulerAngles.y;
+
+                transform.localEulerAngles = new Vector3(_rotationX, rotationY, 0);
+            }
+            else
+            {
+                _rotationX -= Input.GetAxis("Mouse Y") * sensitivityVert;
+                _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert); //clamp è il massimo range possibile per spostare la visuale del mouse
+
+                float delta = Input.GetAxis("Mouse X") * sensitivityHor;
+                float rotationY = transform.localEulerAngles.y + delta;
+
+                transform.localEulerAngles = new Vector3(_rotationX, rotationY, 0);
+
+            }
+
         }
-        else if(axes == RotationAxes.MouseY)
-        {   // la vista si sposta in verticale
-            _rotationX -= Input.GetAxis("Mouse Y") * sensitivityVert;
-            _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert); //clamp è il massimo range possibile per spostare la visuale del mouse
-
-            float rotationY = transform.localEulerAngles.y;
-
-            transform.localEulerAngles = new Vector3(_rotationX, rotationY, 0);
-        }
-        else
-        {
-            _rotationX -= Input.GetAxis("Mouse Y") * sensitivityVert;
-            _rotationX = Mathf.Clamp(_rotationX, minimumVert, maximumVert); //clamp è il massimo range possibile per spostare la visuale del mouse
-
-            float delta = Input.GetAxis("Mouse X") * sensitivityHor;
-            float rotationY = transform.localEulerAngles.y + delta;
-
-            transform.localEulerAngles = new Vector3(_rotationX, rotationY,0);
-
-        }
-
     }
+
 }
